@@ -99,7 +99,7 @@ def evaluate_portfolio_performance_on_data(w, data_evaluate):
     mu = estimate_mu (data_evaluate)
     
     
-    return {'Er': mu.T @ w, 'sigma': np.sqrt(w.T @ V @ w), 
+    return {'Er': mu.T @ w, 'Sigma': np.sqrt(w.T @ V @ w), 
             'var': w.T @ V @ w, 'Sharpe': (mu.T @ w - 0)/(np.sqrt(w.T @ V @ w)) }
 
 #get efficient frontier from tangency and gmv portfolios
@@ -121,7 +121,7 @@ def get_EF_on_data (w_t, w_g, data_evaluate):
 
     for i in np.arange(len(trange)):
         w_mix = trange[i] * w_t + (1-trange[i]) * w_g
-        sigma_range[i] = evaluate_portfolio_performance_on_data (w_mix, data_evaluate) ['sigma']
+        sigma_range[i] = evaluate_portfolio_performance_on_data (w_mix, data_evaluate) ['Sigma']
         Er_range[i] = evaluate_portfolio_performance_on_data (w_mix, data_evaluate) ['Er']
         
     return sigma_range, Er_range
@@ -153,13 +153,13 @@ def plot_evaluation_results_in_sample (data_train):
     plt.plot(sigma_range, Er_range, label = 'EF')
     
     # tangency portfolio (TAN)
-    plt.scatter( evaluate_portfolio_performance_on_data (w_t_train, data_train)['sigma'], evaluate_portfolio_performance_on_data (w_t_train, data_train)['Er'], marker='*', color = 'red',label = 'TAN')
+    plt.scatter( evaluate_portfolio_performance_on_data (w_t_train, data_train)['Sigma'], evaluate_portfolio_performance_on_data (w_t_train, data_train)['Er'], marker='*', color = 'red',label = 'TAN')
     
     # global minimum variance portfolio (GMV)
-    plt.scatter( evaluate_portfolio_performance_on_data (w_g_train, data_train)['sigma'], evaluate_portfolio_performance_on_data (w_g_train, data_train)['Er'], marker='^', color = 'red',label = 'GMV')
+    plt.scatter( evaluate_portfolio_performance_on_data (w_g_train, data_train)['Sigma'], evaluate_portfolio_performance_on_data (w_g_train, data_train)['Er'], marker='^', color = 'red',label = 'GMV')
     
     # equally weighted portfolio (EWP)
-    plt.scatter( evaluate_portfolio_performance_on_data (w_e, data_train)['sigma'], evaluate_portfolio_performance_on_data (w_e, data_train)['Er'], marker='+', color = 'red',label = 'EWP')
+    plt.scatter( evaluate_portfolio_performance_on_data (w_e, data_train)['Sigma'], evaluate_portfolio_performance_on_data (w_e, data_train)['Er'], marker='+', color = 'red',label = 'EWP')
 
 
     plt.legend()
@@ -224,27 +224,27 @@ def plot_evaluation_results_out_sample (data_train, data_test):
     # Evaluate the special portfolios on testing data
 
     # Plot the Tangency portfolio (TAN) constructed from test data
-    plt.scatter( evaluate_portfolio_performance_on_data (w_t_test, data_test)['sigma'], 
+    plt.scatter( evaluate_portfolio_performance_on_data (w_t_test, data_test)['Sigma'], 
                 evaluate_portfolio_performance_on_data (w_t_test, data_test)['Er'], 
                 marker='*', color = 'red',label = 'TAN (from test)')
     
     # Plot the Global minimum variance portfolio (GMV) from test data
-    plt.scatter( evaluate_portfolio_performance_on_data (w_g_test, data_test)['sigma'], 
+    plt.scatter( evaluate_portfolio_performance_on_data (w_g_test, data_test)['Sigma'], 
                 evaluate_portfolio_performance_on_data (w_g_test, data_test)['Er'], 
                 marker='^', color = 'red',label = 'GMV (from test)')
     
     # Plot the Tangency portfolio (TAN) from train data
-    plt.scatter( evaluate_portfolio_performance_on_data (w_t_train, data_test)['sigma'], 
+    plt.scatter( evaluate_portfolio_performance_on_data (w_t_train, data_test)['Sigma'], 
                 evaluate_portfolio_performance_on_data (w_t_train, data_test)['Er'], 
                 marker='*', color = 'black',label = 'TAN (from train)')
     
     # Plot the Global minimum variance portfolio (GMV) from train data
-    plt.scatter( evaluate_portfolio_performance_on_data (w_g_train, data_test)['sigma'], 
+    plt.scatter( evaluate_portfolio_performance_on_data (w_g_train, data_test)['Sigma'], 
                 evaluate_portfolio_performance_on_data (w_g_train, data_test)['Er'], 
                 marker='^', color = 'black',label = 'GMV (from train)')
     
     # Plot the Wqually weighted portfolio (EWP)
-    plt.scatter( evaluate_portfolio_performance_on_data (w_e, data_test)['sigma'], 
+    plt.scatter( evaluate_portfolio_performance_on_data (w_e, data_test)['Sigma'], 
                 evaluate_portfolio_performance_on_data (w_e, data_test)['Er'], 
                 marker='+', color = 'red',label = 'EWP')
     #
